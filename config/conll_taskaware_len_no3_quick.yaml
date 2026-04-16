@@ -13,19 +13,31 @@ sample_rate: 0.6
 model_type: "fsemicrf"
 decoding: "global"
 
-# Keep #3 disabled for a clean comparison
+# Disable improvement #3 (uncertainty rescue / soft filter)
 soft_filter: False
 null_confidence_threshold: 0.9
 uncertain_top_k: 8
 
-# Focal modulation on local span classification loss
-focal_gamma_entity: 1.0
-focal_gamma_non_entity: 2.0
+# Improvement #1: task-aware confidence thresholds by entity type
+type_confidence_thresholds:
+  PERSON: 0.85
+  ORG: 0.75
+  LOC: 0.82
+  MISC: 0.80
 
+# Improvement #2: type-aware length constraints (inclusive token count)
+type_length_ranges:
+  PERSON: [1, 4]
+  ORG: [1, 8]
+  LOC: [1, 3]
+  MISC: [1, 5]
+
+# list of learning rates for each layer
 learning_rates:
   - 1e-5
   - 1e-4
 
+# list of weight decay for each layer
 weight_decay:
   - 1e-3
   - 1e-2
@@ -35,8 +47,8 @@ batch_size:
   - 32
 
 training:
-  - epoch: 10
-    steps: 10000
+  - epoch: 1
+    steps: 1000
     warmup_ratio: 0.001
     eval_steps: 250
 

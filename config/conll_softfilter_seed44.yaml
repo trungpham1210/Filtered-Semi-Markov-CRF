@@ -2,8 +2,9 @@ model_name: "bert-base-cased"
 subtoken_pooling: "first"
 fine_tune: True
 hidden_size: 768
+seed: 44
 
-dataset_path: "CoNLL 2003"
+dataset_path: "/Users/tompham/Documents/CS6320_Project/Filtered-Semi-Markov-CRF/CoNLL 2003"
 
 max_width: 15
 span_mode: "endpoints"
@@ -13,14 +14,9 @@ sample_rate: 0.6
 model_type: "fsemicrf"
 decoding: "global"
 
-# Keep #3 disabled for a clean comparison
-soft_filter: False
+soft_filter: True
 null_confidence_threshold: 0.9
 uncertain_top_k: 8
-
-# Focal modulation on local span classification loss
-focal_gamma_entity: 1.0
-focal_gamma_non_entity: 2.0
 
 learning_rates:
   - 1e-5

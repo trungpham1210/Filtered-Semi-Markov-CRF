@@ -1,0 +1,57 @@
+model_name: "bert-base-cased"
+subtoken_pooling: "first"
+fine_tune: True
+hidden_size: 768
+
+dataset_path: "CoNLL 2003"
+
+max_width: 15
+span_mode: "endpoints"
+
+dropout: 0.4
+sample_rate: 0.6
+model_type: "fsemicrf"
+decoding: "global"
+soft_filter: True
+
+# Global fallback threshold (used if a type-specific threshold is missing)
+null_confidence_threshold: 0.9
+uncertain_top_k: 8
+
+# Improvement #1: task-aware null-confidence thresholds
+# label aliases are supported: PERSON/PER, ORG/ORGANIZATION, LOC/LOCATION, MISC/ELSE
+type_null_confidence_thresholds:
+  PERSON: 0.85
+  ORG: 0.75
+  LOC: 0.82
+  MISC: 0.80
+
+# Improvement #2: type-aware span length constraints (inclusive word count)
+type_length_ranges:
+  PERSON: [1, 4]
+  ORG: [1, 8]
+  LOC: [1, 3]
+  MISC: [1, 5]
+
+# list of learning rates for each layer
+learning_rates:
+  - 1e-5
+  - 1e-4
+
+# list of weight decay for each layer
+weight_decay:
+  - 1e-3
+  - 1e-2
+
+batch_size:
+  - 16
+  - 32
+
+# quick run for iteration
+training:
+  - epoch: 1
+    steps: 1000
+    warmup_ratio: 0.001
+    eval_steps: 250
+
+root_dir: "logs"

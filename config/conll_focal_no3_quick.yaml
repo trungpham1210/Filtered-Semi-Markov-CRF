@@ -18,7 +18,8 @@ soft_filter: False
 null_confidence_threshold: 0.9
 uncertain_top_k: 8
 
-# Focal modulation on local span classification loss
+# New idea: focal modulation on local span classification loss
+# Helps focus on hard examples and reduce easy-negative dominance
 focal_gamma_entity: 1.0
 focal_gamma_non_entity: 2.0
 
@@ -35,8 +36,8 @@ batch_size:
   - 32
 
 training:
-  - epoch: 10
-    steps: 10000
+  - epoch: 1
+    steps: 1000
     warmup_ratio: 0.001
     eval_steps: 250
 

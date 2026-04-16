@@ -1,0 +1,40 @@
+model_name: "bert-base-cased"
+subtoken_pooling: "first"
+fine_tune: True
+hidden_size: 768
+
+dataset_path: "CoNLL 2003"
+
+max_width: 15
+span_mode: "endpoints"
+
+dropout: 0.4
+sample_rate: 0.6
+model_type: "fsemicrf"
+decoding: "global"
+soft_filter: True
+null_confidence_threshold: 0.9
+uncertain_top_k: 8
+
+# list of learning rates for each layer
+learning_rates:
+  - 1e-5 # for bert embeddings
+  - 1e-4 # for other layers
+
+# list of weight decay for each layer
+weight_decay:
+  - 1e-3 # for bert embeddings
+  - 1e-2 # for other layers
+
+batch_size:
+  - 16 # for training
+  - 32 # for evaluation
+
+# quick pilot run: keep model/hparams same, reduce steps for faster comparison
+training:
+  - epoch: 1
+    steps: 300
+    warmup_ratio: 0.001
+    eval_steps: 300
+
+root_dir: "logs"

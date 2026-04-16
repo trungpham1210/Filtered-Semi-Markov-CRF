@@ -1,5 +1,7 @@
 import argparse
+import random
 
+import numpy as np
 import torch
 import yaml
 
@@ -10,7 +12,7 @@ from train_utils import train_model
 
 def create_parser():
     parser = argparse.ArgumentParser(description="Span-based NER")
-    parser.add_argument("--config", type=str, default="configs/conll.yaml", help="Path to config file")
+    parser.add_argument("--config", type=str, default="config/conll.yaml", help="Path to config file")
     parser.add_argument('--log_dir', type=str, default='logs', help='Path to the log directory')
     return parser
 
@@ -20,6 +22,14 @@ def load_config_as_namespace(config_file):
         config_dict = yaml.safe_load(f)
     return argparse.Namespace(**config_dict)
 
+
+def set_seed(seed: int):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
 if __name__ == "__main__":
     # parse args
     parser = create_parser()
@@ -27,6 +37,10 @@ if __name__ == "__main__":
 
     # load config
     config = load_config_as_namespace(args.config)
+
+    # set random seed (optional)
+    if hasattr(config, "seed"):
+        set_seed(int(config.seed))
 
     # overwrite config log_dir
     config.log_dir = args.log_dir

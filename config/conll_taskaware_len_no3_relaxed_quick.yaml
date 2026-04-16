@@ -13,14 +13,24 @@ sample_rate: 0.6
 model_type: "fsemicrf"
 decoding: "global"
 
-# Keep #3 disabled for a clean comparison
+# Keep #3 disabled for clean ablation
 soft_filter: False
 null_confidence_threshold: 0.9
 uncertain_top_k: 8
 
-# Focal modulation on local span classification loss
-focal_gamma_entity: 1.0
-focal_gamma_non_entity: 2.0
+# Relaxed thresholds for better recall (Improvement #1)
+type_confidence_thresholds:
+  PERSON: 0.65
+  ORG: 0.55
+  LOC: 0.60
+  MISC: 0.55
+
+# Relaxed span length constraints (Improvement #2)
+type_length_ranges:
+  PERSON: [1, 6]
+  ORG: [1, 12]
+  LOC: [1, 5]
+  MISC: [1, 7]
 
 learning_rates:
   - 1e-5
@@ -35,8 +45,8 @@ batch_size:
   - 32
 
 training:
-  - epoch: 10
-    steps: 10000
+  - epoch: 1
+    steps: 1000
     warmup_ratio: 0.001
     eval_steps: 250
 

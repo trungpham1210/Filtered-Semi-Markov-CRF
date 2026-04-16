@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Large model checkpoints (use Git LFS if needed)
+logs/**/*.pt

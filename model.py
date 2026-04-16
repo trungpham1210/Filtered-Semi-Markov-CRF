@@ -46,6 +46,16 @@ class NerSpanModel(SpanModelBase):
             num_classes=len(config.entity_types) + 1,
             sample_rate=config.sample_rate,  # give lower weight to "null" spans
             model_type=config.model_type,  # ['standard', 'gss', 'fsemicrf']
+            null_confidence_threshold=getattr(config, "null_confidence_threshold", 0.9),
+            uncertain_top_k=getattr(config, "uncertain_top_k", 8),
+            soft_filter=getattr(config, "soft_filter", True),
+            entity_types=config.entity_types,
+            entity_confidence_threshold=getattr(config, "entity_confidence_threshold", 0.0),
+            type_confidence_thresholds=getattr(config, "type_confidence_thresholds", None),
+            type_null_confidence_thresholds=getattr(config, "type_null_confidence_thresholds", None),
+            type_length_ranges=getattr(config, "type_length_ranges", None),
+            focal_gamma_entity=getattr(config, "focal_gamma_entity", 0.0),
+            focal_gamma_non_entity=getattr(config, "focal_gamma_non_entity", 0.0),
         )
 
     def get_optimizer(self, config):
